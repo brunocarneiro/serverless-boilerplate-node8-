@@ -1,4 +1,4 @@
-import * as api from '../../src/create';
+const api = require('../../src/create');
 
 /**
  * This is the preliminary test using callback from Node 6 and old Serverless
@@ -34,6 +34,5 @@ test('Trying to create a city with a valid json', async () => {
   event.body = JSON.stringify(mockCity);
   // call the method directly, not the API as a web client
   const response = await api.create(event);
-  console.log(response);
   expect(response.statusCode).toEqual(200);
 });

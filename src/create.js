@@ -1,4 +1,3 @@
-const uuid = require('uuid');
 const dynamodb = require('./dynamodb');
 
 /**
@@ -11,8 +10,8 @@ exports.create = async (event) => {
     const requestData = JSON.parse(event.body);
     // basic data type validation
     // TODO should we use JSON Schema?
-    if (typeof requestData.name !== 'string' && typeof requestData.latitude !== 'number' &&
-          typeof requestData.longitude !== 'number' && typeof requestData.state !== 'string') {
+    if (typeof requestData.name !== 'string' || typeof requestData.latitude !== 'number'
+          || typeof requestData.longitude !== 'number' || typeof requestData.state !== 'string') {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'text/plain' },
@@ -25,7 +24,6 @@ exports.create = async (event) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE,
       Item: {
-        id: uuid.v4(),
         latitude: requestData.latitude,
         longitude: requestData.longitude,
         name: requestData.name,
@@ -38,13 +36,8 @@ exports.create = async (event) => {
     // lets make a request to dynamodb and insert our entity
     const dynamoPromise = dynamodb.put(params).promise();
     return await dynamoPromise.then((response) => {
-      if (response !== undefined) {
-        return {
-          statusCode: 200,
-        };
-      }
       return {
-        statusCode: 400,
+        statusCode: 200,
       };
     });
   } catch (e) {

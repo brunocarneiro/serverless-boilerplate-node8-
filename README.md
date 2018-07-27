@@ -1,6 +1,6 @@
 # Serverless Boilerplate Project with Node 8
 
-ESLint
+ESLint Airbnb
 
 Tests setup with one sample
 
@@ -14,7 +14,7 @@ Simple service example
 
 serverless.yml (with stage support)
 
-Local test support
+Local test support (Serverless Offline and DynamoDB)
 
 ### Requirements
 
@@ -24,25 +24,31 @@ Local test support
 
 Clone the project.
 
-``` bash
+```bash
 $ git clone --url https://github.com/civicteam/serverless-boilerplate-node8 --name my-project
 ```
 
 Enter the new directory
 
-``` bash
+```bash
 $ cd my-project
 ```
 
 Install the Node.js packages
 
-``` bash
+```bash
 $ npm install
+```
+
+If you haven't installed Serverless CLI before, do it by running:
+
+```bash
+$ npm install -g serverless
 ```
 
 Install the DynamoDB Local
 
-``` bash
+```bash
 $ serverless dynamodb install
 ```
 
@@ -50,20 +56,14 @@ $ serverless dynamodb install
 
 To run unit tests on your local
 
-``` bash
+```bash
 $ npm run test
 ```
 
 To run a function on your local
 
-``` bash
+```bash
 $ serverless invoke local --function hello
-```
-
-Install DynamoDB Local
-
-``` bash
-$ npm install --save serverless-dynamodb-local
 ```
 
 Add DynamoDB Resource definitions to your Serverless configuration, as defined [here](https://serverless.com/framework/docs/providers/aws/guide/resources/#configuration) 
@@ -89,13 +89,13 @@ resources:
 
 You can either start DynamoDB locally yourself:
 
-``` bash
+```bash
 $ sls dynamodb start
 ```
 
 Or configure to start it by serverless
 
-```yml
+```yaml
 custom:
   dynamodb:
     start:
@@ -110,13 +110,13 @@ custom:
 
 To simulate API Gateway locally using [serverless-offline](https://github.com/dherault/serverless-offline)
 
-``` bash
+```bash
 $ serverless offline start
 ```
 
 Run your tests
 
-``` bash
+```bash
 $ npm test
 ```
 
@@ -124,14 +124,14 @@ We use Jest to run our tests. You can read more about setting up your tests [her
 
 Deploy your project
 
-``` bash
-$ serverless deploy
+```bash
+$ sls deploy
 ```
 
 Deploy a single function
 
-``` bash
-$ serverless deploy function --function hello
+```bash
+$ sls deploy function --function hello
 ```
 
 To add another function as a new file to your project, simply add the new file and add the reference to `serverless.yml`. The `webpack.config.js` automatically handles functions in different files.
@@ -150,7 +150,7 @@ To add environment variables to your project
 Remember the best practice on production enviroment:
 [IAM Permissions](https://serverless.com/blog/abcs-of-iam-permissions/)
 
-``` bash
+```
 Fast but risky (aka YOLO): The fastest way to get started with Serverless 
 is to create an IAM user with Administrator Access. This IAM user will have 
 full access to your AWS account and should not be used for your 

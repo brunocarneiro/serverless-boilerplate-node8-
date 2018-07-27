@@ -4,7 +4,10 @@
   "description": "A Node.js starter for the Serverless Framework with await and async and unit test support with JEST",
   "main": "index.html",
   "scripts": {
-    "test": "sls offline start --exec \"cross-env IS_OFFLINE=true DYNAMODB_TABLE='city-dev' API_URL='localhost:3000' jest\""
+    "lint": "eslint src/. tests/. --config .eslintrc.json",
+    "integration": "sls offline start --exec \"cross-env IS_OFFLINE=true DYNAMODB_TABLE='city-dev' API_URL='localhost:3000' jest tests/integration\"",
+    "unit": "cross-env IS_OFFLINE=true DYNAMODB_TABLE='city-dev' API_URL='localhost:3000' jest tests/unit",
+    "test": "npm run unit && npm run integration"
   },
   "author": "",
   "license": "MIT",
@@ -12,44 +15,56 @@
     "type": "git",
     "url": "https://github.com/civicteam/serverless-boilerplate-node8"
   },
+  "engines": {
+    "node": "^8.0.0",
+    "npm": ">= 3.0.0"
+  },
   "devDependencies": {
-    "aws-sdk-mock": "^2.0.0",
-    "cross-env": "^5.1.5",
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",
-    "jest": "^21.2.1",
-    "jest-html-reporter": "^2.3.0",
-    "serverless-offline": "^3.20.3",
-    "serverless-webpack": "^5.1.0",
-    "webpack": "^4.2.0",
-    "webpack-node-externals": "^1.6.0"
+    "aws-sdk-mock": "^4.0.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "jest": "^23.4.1",
+    "jest-stare": "^1.6.0",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.6"
   },
   "dependencies": {
-    "aws-sdk": "^2.238.1",
+    "aws-sdk": "^2.282.1",
     "bluebird": "^3.5.1",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2",
-    "serverless-dynamodb-local": "^0.2.30",
-    "source-map-support": "^0.4.18",
-    "uuid": "^3.2.1"
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
   },
   "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
     "collectCoverageFrom": [
-      "**/src/*.{js}",
+      "**/src/**/*.{js}",
       "!**/node_modules/**",
+      "!**/build/**",
+      "!**/dist/**",
       "!**/vendor/**"
     ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 85,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
+      }
+    },
+    "testURL": "http://localhost/",
     "coverageDirectory": "reports/coverage",
     "collectCoverage": true,
-    "testResultsProcessor": "./node_modules/jest-html-reporter"
+    "testResultsProcessor": "./node_modules/jest-stare",
+    "verbose": true
   },
-  "jest-html-reporter": {
-    "pageTitle": "City Test Suite",
-    "outputPath": "reports/test-report.html",
-    "includeFailureMsg": true
+  "jest-stare": {
+    "resultDir": "reports",
+    "resultHtml": "index.html"
   }
 }
