@@ -1,0 +1,70 @@
+{
+  "name": "city",
+  "version": "1.0.0",
+  "description": "A Node.js starter for the Serverless Framework with await and async and unit test support with JEST",
+  "main": "index.html",
+  "scripts": {
+    "lint": "eslint src/. tests/. --config .eslintrc.json",
+    "integration": "sls offline start --exec \"cross-env IS_OFFLINE=true DYNAMODB_TABLE='city-dev' API_URL='localhost:3000' jest tests/integration\"",
+    "unit": "cross-env IS_OFFLINE=true DYNAMODB_TABLE='city-dev' API_URL='localhost:3000' jest tests/unit",
+    "test": "npm run unit && npm run integration"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/civicteam/serverless-boilerplate-node8"
+  },
+  "engines": {
+    "node": "^8.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^4.0.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "jest": "^23.4.1",
+    "jest-stare": "^1.6.0",
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.6"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.282.1",
+    "bluebird": "^3.5.1",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
+    "collectCoverageFrom": [
+      "**/src/**/*.{js}",
+      "!**/node_modules/**",
+      "!**/build/**",
+      "!**/dist/**",
+      "!**/vendor/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 85,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
+      }
+    },
+    "testURL": "http://localhost/",
+    "coverageDirectory": "reports/coverage",
+    "collectCoverage": true,
+    "testResultsProcessor": "./node_modules/jest-stare",
+    "verbose": true
+  },
+  "jest-stare": {
+    "resultDir": "reports",
+    "resultHtml": "index.html"
+  }
+}
